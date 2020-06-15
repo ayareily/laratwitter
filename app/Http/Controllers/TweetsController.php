@@ -29,7 +29,11 @@ class TweetsController extends Controller
     // 新規ツイート入力画面
     public function create()
     {
-        //
+      $user = auth()->user();
+
+      return view('tweets.create', [
+        'user' => $user
+      ]);
     }
 
     // 新規ツイート投稿処理
@@ -41,7 +45,15 @@ class TweetsController extends Controller
     // ツイート詳細画面
     public function show($id)
     {
-        //
+      $user = auth()->user();
+      $tweet = $tweet->getTweet($tweet->id);
+      $comments = $comment->getComments($tweet->id);
+      
+      return view('tweets.show',[
+        'user' => $user,
+        'tweet' => $tweet,
+        'comments' => $comments
+      ]);
     }
 
     // ツイート編集画面
