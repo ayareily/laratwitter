@@ -8,10 +8,10 @@ use App\Models\Tweet;
 use App\Models\Comment;
 use App\Models\Follower;
 
-class TweetsConroller extends Controller
+class TweetsController extends Controller
 {
     // 一覧表示
-    public function index()
+    public function index(Tweet $tweet, Follower $follower)
     {
       $user = auth()->user();
       $follow_ids = $follower->followingIds($user->id);
@@ -21,8 +21,8 @@ class TweetsConroller extends Controller
       $timelines = $tweet->getTimelines($user->id, $following_ids);
 
       return view('tweets.index', [
-        'user' => $user,
-        'timelines' => $timelines
+          'user'      => $user,
+          'timelines' => $timelines
       ]);
     }
 
