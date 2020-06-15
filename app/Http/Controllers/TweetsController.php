@@ -39,7 +39,16 @@ class TweetsController extends Controller
     // 新規ツイート投稿処理
     public function store(Request $request)
     {
-        //
+      $user = auth()->user();
+      $data = $request->all();
+      $valicator = Validator::make($data, [
+        'text' => ['required', 'string', 'max:140']
+      ]);
+
+      $validator->validate();
+      $tweet->tweetStore($user->id, $data);
+
+      return redirect('tweets');
     }
 
     // ツイート詳細画面
