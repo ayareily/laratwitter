@@ -82,7 +82,7 @@ class TweetsController extends Controller
     }
 
     // ツイート編集処理
-    public function update(Request $request, $id)
+    public function update(Request $request, Int $tweet_id)
     {
       $data = $request->all();
       $validator = Validator::make($data, [
