@@ -37,11 +37,11 @@ class TweetsController extends Controller
     }
 
     // 新規ツイート投稿処理
-    public function store(Request $request)
+    public function store(Request $request, Tweet $tweet)
     {
       $user = auth()->user();
       $data = $request->all();
-      $valicator = Validator::make($data, [
+      $validator = Validator::make($data, [
         'text' => ['required', 'string', 'max:140']
       ]);
 
@@ -66,15 +66,33 @@ class TweetsController extends Controller
     }
 
     // ツイート編集画面
-    public function edit($id)
+    public function edit(Tweet $tweet)
     {
-        //
+      $user = auth()->user();
+      $tweets = $tweet->getEditTweet($user->id, $tweet->id);
+
+      if(!isset($tweets)){
+        return redirect('tweets');
+      }
+
+      return view('tweets.edit', [
+        'user' => $user,
+        'tweets' => $tweets
+      ]);
     }
 
     // ツイート編集処理
     public function update(Request $request, $id)
     {
-        //
+      $data = $request->all();
+      $validator = Validator::make($data, [
+        'text' => ['required', 'string', 'max:140']
+      ]);
+
+      $validator->validate();
+      $tweet->tweetUpdate($tweet->id, $data);
+
+      return redirect('tweets');
     }
 
     // ツイート削除処理
